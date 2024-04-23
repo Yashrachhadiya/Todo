@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TO-DO App</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-teal-900">
+  <div class="container mx-auto py-8">
+    <h1 class="text-4xl md:text-6xl font-bold text-center mb-8">Dynamic Todo App</h1>
+
+    <div class="container mx-auto py-8">
+      <div class="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-4 my-3">
+        <input id="taskPriority" type="number" class="border px-4 py-2 w-full md:w-auto " min="1" placeholder="Enter task priority...">
+        <input id="taskInput" type="text" class="border px-4 py-2 w-full md:w-auto" placeholder="Enter task...">
+        <button id="addTaskBtn" class="bg-blue-500 text-white px-4 py-2 rounded">Add Task</button>
+      </div>
+      <div class="flex items-center space-x-4 my-3">
+        <p id="errorMessage" class="text-xs text-red-500 hidden md:block"></p>
+      </div>
+      <div id="todoList" class="space-y-4"></div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>  
