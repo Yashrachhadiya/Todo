@@ -1,9 +1,7 @@
-
 const errorMassge = document.getElementById("errorMessage");
 const todoList = document.getElementById("todoList");
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-console.log(tasks);
-// Function to render tasks on the webpage
+
 function renderTasks() {
   todoList.innerHTML = "";
   errorMassge.innerHTML = "";
@@ -29,7 +27,6 @@ function renderTasks() {
   });
 }
 
-//add new task
 function addTask(taskText, priority) {
   const existingIndex = tasks.findIndex((t) => t.priority === priority);
   if (existingIndex !== -1) {
@@ -46,30 +43,46 @@ function addTask(taskText, priority) {
   renderTasks();
 }
 
-// edit task
 function editTask(index) {
   const newTask = prompt("Edit task:", tasks[index].task);
   if (newTask !== null) {
-    tasks[index].task = newTask;
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-    renderTasks();
+    const newPriority = parseInt(prompt("Enter new priority for the task:", tasks[index].priority));
+    if (!isNaN(newPriority) && newPriority >= 1) {
+      const oldPriority = tasks[index].priority;
+      tasks[index].task = newTask;
+      if (newPriority !== oldPriority) {
+        const existingIndex = tasks.findIndex(task => task.priority === newPriority);
+        if (existingIndex !== -1) {
+          tasks.forEach((task) => {
+            if (task.priority >= newPriority && task !== tasks[index]) {
+              task.priority++;
+            }
+          });
+        }
+        tasks[index].priority = newPriority;
+        tasks.sort((a, b) => a.priority - b.priority);
+        tasks.forEach((task, i) => {
+          task.priority = i + 1;
+        });
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        renderTasks();
+      }
+    } else {
+      alert("Please enter a valid priority (a positive integer).");
+    }
   }
 }
 
-
-
-// Function to delete a task
 function deleteTask(index) {
   tasks.splice(index, 1);
   tasks.forEach((task, i) => {
     task.priority = i + 1;
   });
-  confirm("Are you wants to delete this task?");
+  confirm("Are you sure you want to delete this task?");
   localStorage.setItem('tasks', JSON.stringify(tasks));
   renderTasks();
 }
 
-// Function to handle the "Add Task" button click event
 document.getElementById("addTaskBtn").addEventListener("click", () => {
   const taskInput = document.getElementById("taskInput");
   const taskPriority = document.getElementById("taskPriority").value.trim();
@@ -86,5 +99,4 @@ document.getElementById("addTaskBtn").addEventListener("click", () => {
   }
 });
 
-// Render tasks on page load
 renderTasks();
